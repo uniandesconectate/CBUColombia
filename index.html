@@ -1,5 +1,500 @@
-<html>
-  <body>
-    <h1>CBU Colombia</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CBU Colombia en primera persona · Dimensiones de la historia de vida</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f6f6f4;
+    --surface: #fcfcfb;
+    --surface-2: #eeeeeb;
+    --line: #dcdbd6;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --ink-3: #75746f;
+    --g1: #2a78d6;
+    --g2: #eb6834;
+    --g3: #1baf7a;
+    --focus: #2a78d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --page: #121211;
+      --surface: #1a1a19;
+      --surface-2: #2a2a28;
+      --line: #3a3a37;
+      --ink: #f0efec;
+      --ink-2: #c3c2b7;
+      --ink-3: #9a998f;
+      --g1: #3987e5;
+      --g2: #d95926;
+      --g3: #199e70;
+      --focus: #6da7ec;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 20px 64px; }
+  h1 { font-size: 24px; margin: 0 0 4px; font-weight: 650; }
+  .subtitle { font-size: 18px; font-weight: 500; color: var(--ink-2); margin: 0 0 10px; }
+  h2 { font-size: 16px; margin: 0 0 4px; font-weight: 650; }
+  p { margin: 0; }
+  .sub { color: var(--ink-2); max-width: 70ch; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px 20px; margin-top: 16px;
+  }
+  .muted { color: var(--ink-2); font-size: 13px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button, .btn {
+    font: inherit; font-size: 14px; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer;
+  }
+  button:hover, .btn:hover { background: var(--surface-2); }
+  button.primary { background: var(--g1); border-color: var(--g1); color: #fff; }
+  button.primary:hover { filter: brightness(1.08); }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  textarea {
+    width: 100%; min-height: 84px; font: 13px/1.4 ui-monospace, Menlo, Consolas, monospace;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px; margin-top: 10px; resize: vertical;
+  }
+  #drop {
+    border: 1.5px dashed var(--line); border-radius: 10px; padding: 14px;
+    text-align: center; color: var(--ink-2); margin-top: 12px;
+  }
+  #drop.over { border-color: var(--g1); background: var(--surface-2); }
+  .notice {
+    border-left: 3px solid var(--g2); background: var(--surface-2);
+    padding: 8px 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; color: var(--ink-2);
+  }
+  .error { border-left-color: #e34948; color: var(--ink); }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .kpi .lab { color: var(--ink-2); font-size: 12.5px; }
+  .kpi .big { font-size: 26px; font-weight: 650; line-height: 1.15; margin-top: 2px; }
+  .kpi .big.txt { font-size: 17px; line-height: 1.3; }
+  .kpi .det { color: var(--ink-2); font-size: 12.5px; margin-top: 2px; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); margin: 6px 0 10px; }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 6px; }
+  .sw.hatch { background: repeating-linear-gradient(45deg, var(--ink-3) 0 2px, transparent 2px 5px); border: 1px solid var(--ink-3); }
+  .item {
+    display: grid; grid-template-columns: minmax(150px, 250px) 1fr 128px; gap: 12px;
+    align-items: center; padding: 5px 4px; border-radius: 6px;
+  }
+  .item:hover, .item:focus-visible { background: var(--surface-2); }
+  .item .nm { font-size: 14px; color: var(--ink); }
+  .item .val { font-size: 13px; color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+  .track { height: 14px; background: var(--surface-2); border-radius: 4px; display: flex; overflow: hidden; }
+  .seg { height: 100%; }
+  .seg.si { border-radius: 0 4px 4px 0; }
+  .seg.si:first-child { border-radius: 4px; }
+  .seg.du { margin-left: 2px; border-radius: 0 4px 4px 0; }
+  .c0 .si { background: var(--g1); } .c1 .si { background: var(--g2); } .c2 .si { background: var(--g3); }
+  .c0 .du { background: repeating-linear-gradient(45deg, var(--g1) 0 2px, transparent 2px 5px); border: 1px solid var(--g1); }
+  .c1 .du { background: repeating-linear-gradient(45deg, var(--g2) 0 2px, transparent 2px 5px); border: 1px solid var(--g2); }
+  .c2 .du { background: repeating-linear-gradient(45deg, var(--g3) 0 2px, transparent 2px 5px); border: 1px solid var(--g3); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .grid3 .card { margin-top: 0; }
+  .grid3 .item { grid-template-columns: 1fr; gap: 3px; }
+  .grid3 .item .top { display: flex; justify-content: space-between; gap: 8px; }
+  .gsum { display: flex; align-items: baseline; gap: 8px; margin: 4px 0 8px; }
+  .gsum b { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .tag { border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; font-size: 13px; background: var(--surface-2); }
+  .tag b { font-variant-numeric: tabular-nums; }
+  ul.clean { margin: 8px 0 0; padding-left: 18px; }
+  ul.clean li { margin: 3px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin-top: 8px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  details > summary { cursor: pointer; font-weight: 600; }
+  #tip {
+    position: fixed; z-index: 10; pointer-events: none; display: none; max-width: 320px;
+    background: var(--ink); color: var(--page); font-size: 12.5px; line-height: 1.4;
+    padding: 8px 10px; border-radius: 8px; white-space: pre-line;
+  }
+  .hidden { display: none !important; }
+  @media (max-width: 860px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .grid3 { grid-template-columns: 1fr; }
+    .item { grid-template-columns: 1fr; gap: 3px; }
+    .item .val { text-align: left; }
+  }
+  @media print {
+    body { background: #fff; color: #000; }
+    #loader, .noprint { display: none !important; }
+    .card, .kpi { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>CBU Colombia en primera persona</h1>
+  <p class="subtitle">Dimensiones de la historia de vida</p>
+  <p class="sub">Este panel le permite tener un panorama general de las dimensiones presentes en la historia de vida.</p>
+  <p class="muted" style="margin-top:6px">Nota: Este panel solo es de visualización, no guarda información.</p>
+
+  <section class="card" id="loader">
+    <h2>1. Cargue la tabla</h2>
+    <p class="muted">Use el CSV descargado desde Gemini Notebook (Archivo, Descargar, CSV).</p>
+    <div id="drop">Arrastre aquí el archivo CSV
+      <div class="row" style="justify-content:center;margin-top:8px">
+        <label class="btn" for="file">Elegir archivo</label>
+        <input id="file" type="file" accept=".csv,text/csv" class="hidden">
+      </div>
+      <div id="fname" class="muted" style="margin-top:8px"></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button class="primary" id="btnShow">Mostrar panel</button>
+      <button id="btnDemo">Probar con datos de ejemplo</button>
+      <button id="btnClear">Limpiar</button>
+    </div>
+    <div id="msgs"></div>
+  </section>
+
+  <div id="out" class="hidden">
+    <div class="kpis" id="kpis"></div>
+
+    <section class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <h2>Ranking de las 11 dimensiones</h2>
+          <p class="muted" id="rankSub"></p>
+        </div>
+        <div class="row noprint">
+          <button id="btnPrint">Imprimir o guardar PDF</button>
+          <button id="btnCsv">Descargar resumen (CSV)</button>
+        </div>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div id="rank"></div>
+    </section>
+
+    <div style="margin-top:24px">
+      <h2>Dimensiones por categoría</h2>
+      <p class="muted">Las dimensiones se agrupan en tres categorías. Dentro de cada una se ordenan de mayor a menor presencia.</p>
+    </div>
+    <div class="grid3" id="groups"></div>
+
+    <section class="card">
+      <h2>Temas emergentes</h2>
+      <p class="muted">Temas que aparecieron en las entregas y no están entre las 11 dimensiones. El número indica en cuántas entregas aparece.</p>
+      <div class="tags" id="emer"></div>
+    </section>
+
+    <section class="card">
+      <h2>Para pensar la próxima clase</h2>
+      <ul class="clean" id="ideas"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Celdas dudosas para revisar</h2>
+      <p class="muted">La IA marcó Dudosa cuando la alusión era vaga. Abra esas entregas y decida si cuentan.</p>
+      <div id="dudosas"></div>
+    </section>
+
+    <section class="card">
+      <details>
+        <summary>Ver como tabla</summary>
+        <div id="tbl"></div>
+      </details>
+    </section>
+  </div>
+</main>
+<div id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const DIMS = [
+  { k:'hv', g:0, name:'Hechos y violencia',                 re:/hecho|violencia/ },
+  { k:'ci', g:0, name:'Cambios institucionales',            re:/institucion/ },
+  { k:'ga', g:0, name:'Gobiernos y alcaldes',               re:/gobierno|alcald/ },
+  { k:'ec', g:0, name:'Crisis económicas',                  re:/crisis|economic/ },
+  { k:'ce', g:0, name:'Eventos culturales y deportivos',    re:/evento/ },
+  { k:'ed', g:1, name:'Acceso a la educación',              re:/educacion/ },
+  { k:'vi', g:1, name:'Primeros viajes',                    re:/viaje/ },
+  { k:'fl', g:1, name:'Familia y vida laboral',             re:/familia|laboral/ },
+  { k:'ip', g:2, name:'Intereses políticos',                re:/politic/ },
+  { k:'vr', g:2, name:'Vida religiosa',                     re:/religios/ },
+  { k:'dc', g:2, name:'Deporte, cultura y vida cotidiana',  re:/cotidian/ }
+];
+const GROUPS = ['Historia de Colombia', 'Trayectoria personal', 'Subjetividad y cultura'];
+
+const DEMO = `ID entrega,Hechos y violencia,Cambios institucionales,Gobiernos y alcaldes,Crisis económicas,Eventos culturales y deportivos,Acceso a la educación,Primeros viajes,Familia y vida laboral,Intereses políticos,Vida religiosa,"Deporte, cultura y vida cotidiana",Temas emergentes
+E001,Sí,No,No,Sí,No,Sí,Sí,Sí,No,Sí,Sí,Migración y desplazamiento; Trabajo doméstico
+E002,No,Sí,Sí,Sí,Sí,No,No,Sí,No,No,Dudosa,Comercio informal
+E003,Sí,Sí,Dudosa,No,No,Sí,No,Sí,Sí,No,No,Víctimas y memoria; Migración y desplazamiento
+E004,No,No,No,No,Dudosa,Sí,Sí,Sí,Sí,No,Sí,Magisterio y sindicalismo
+E005,No,No,No,No,Sí,Sí,Sí,Sí,Sí,No,Sí,Migración internacional; Remesas
+E006,Sí,Sí,Sí,No,No,No,No,Sí,Sí,Sí,No,Memoria oral y fuentes; Oficios artesanales
+E007,No,No,No,Sí,No,Sí,No,Sí,No,Dudosa,Sí,Madres cabeza de hogar
+E008,Sí,No,No,No,Sí,Sí,No,Sí,No,Sí,Dudosa,Economía cafetera; Oficios del campo
+`;
+const $ = s => document.querySelector(s);
+const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- lectura de la tabla ---------- */
+function detectDelim(text) {
+  const line = text.split(/\r?\n/).find(l => l.trim() !== '') || '';
+  const c = { '\t': 0, ';': 0, ',': 0 };
+  let inQ = false;
+  for (const ch of line) {
+    if (ch === '"') inQ = !inQ;
+    else if (!inQ && ch in c) c[ch]++;
+  }
+  if (c['\t'] > 0 && c['\t'] >= c[';'] && c['\t'] >= c[',']) return '\t';
+  return c[';'] > c[','] ? ';' : ',';
+}
+function parseDelimited(text, d) {
+  const rows = []; let row = [], cell = '', inQ = false;
+  text = text.replace(/^﻿/, '');
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else inQ = false; }
+      else cell += ch;
+    } else if (ch === '"') inQ = true;
+    else if (ch === d) { row.push(cell); cell = ''; }
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); cell = ''; rows.push(row); row = [];
+    } else cell += ch;
+  }
+  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(x => x.trim() !== ''));
+}
+function buildData(rows) {
+  const warnings = [];
+  if (rows.length < 2) throw new Error('No encontré filas de datos. Revise que incluya la fila de encabezados y al menos una entrega.');
+  const colOf = {}; let idCol = -1, emCol = -1;
+  rows[0].forEach((h, i) => {
+    const t = norm(h);
+    if (emCol < 0 && /emergent|otros temas/.test(t)) { emCol = i; return; }
+    for (const d of DIMS) if (colOf[d.k] === undefined && d.re.test(t)) { colOf[d.k] = i; return; }
+    if (idCol < 0 && /^(id|entrega|fuente|codigo|documento|estudiante|nombre)/.test(t)) idCol = i;
+  });
+  const found = DIMS.filter(d => colOf[d.k] !== undefined);
+  if (!found.length) throw new Error('No reconocí ninguna columna de dimensiones. Revise que los encabezados sean los de la tabla (por ejemplo "Hechos y violencia").');
+  DIMS.filter(d => colOf[d.k] === undefined).forEach(d => warnings.push('No encontré la columna "' + d.name + '". Se muestra sin datos.'));
+  if (idCol < 0 && !Object.values(colOf).includes(0) && emCol !== 0) idCol = 0;
+
+  const out = []; const seen = new Set(); let skipped = 0, unknownCells = 0;
+  rows.slice(1).forEach((r, ri) => {
+    const id = idCol >= 0 ? (r[idCol] || '').trim() : '';
+    if (/instrucciones/.test(norm(id))) { skipped++; return; }
+    const vals = {}; let any = false;
+    DIMS.forEach(d => {
+      const c = colOf[d.k]; let v = null;
+      if (c !== undefined) {
+        const raw = (r[c] || '').trim();
+        const t = norm(raw);
+        if (/^si(?![a-z])/.test(t)) v = 'Sí';
+        else if (/^no(?![a-z])/.test(t)) v = 'No';
+        else if (/^dud/.test(t) || /^\?/.test(t)) v = 'Dudosa';
+        else if (raw !== '') unknownCells++;
+      }
+      if (v) any = true;
+      vals[d.k] = v;
+    });
+    if (!any && !id) return;
+    const label = id || ('Fila ' + (ri + 2));
+    if (seen.has(label)) warnings.push('El código ' + label + ' aparece más de una vez. Se cuenta cada fila.');
+    seen.add(label);
+    const em = []; const emSeen = new Set();
+    if (emCol >= 0) (r[emCol] || '').split(/[;\n]/).forEach(x => {
+      const s = x.trim(), n = norm(s);
+      if (s && !/^(ninguno|ninguna|n\/a|na|-|no hay)$/.test(n) && !emSeen.has(n)) { emSeen.add(n); em.push(s); }
+    });
+    out.push({ id: label, vals, em });
+  });
+  if (!out.length) throw new Error('No encontré entregas con datos en la tabla.');
+  if (skipped) warnings.push('Se omitió ' + skipped + ' fila(s) que parecen ser el documento de instrucciones y no una entrega.');
+  if (unknownCells) warnings.push(unknownCells + ' celda(s) no dicen Sí, No ni Dudosa y se tomaron como sin dato.');
+  return { rows: out, warnings };
+}
+
+/* ---------- cálculo ---------- */
+function compute(data) {
+  const n = data.rows.length;
+  const stats = DIMS.map(d => {
+    const si = [], du = [], no = [];
+    data.rows.forEach(r => { const v = r.vals[d.k]; if (v === 'Sí') si.push(r.id); else if (v === 'Dudosa') du.push(r.id); else if (v === 'No') no.push(r.id); });
+    return { d, si, du, no, nd: n - si.length - du.length - no.length };
+  });
+  const groups = GROUPS.map((name, gi) => {
+    const items = stats.filter(s => s.d.g === gi);
+    const present = data.rows.filter(r => items.some(s => r.vals[s.d.k] === 'Sí')).length;
+    return { name, gi, items, present };
+  });
+  const em = new Map();
+  data.rows.forEach(r => r.em.forEach(t => {
+    const k = norm(t); const e = em.get(k) || { t, c: 0 }; e.c++; em.set(k, e);
+  }));
+  const emer = [...em.values()].sort((a, b) => b.c - a.c || a.t.localeCompare(b.t, 'es'));
+  const dudCells = stats.reduce((a, s) => a + s.du.length, 0);
+  const dudRows = new Set(); stats.forEach(s => s.du.forEach(i => dudRows.add(i)));
+  return { n, stats, groups, emer, dudCells, dudRows: dudRows.size };
+}
+
+/* ---------- dibujo ---------- */
+let STATE = null;
+const pct = (a, n) => n ? Math.round(100 * a / n) + '%' : '0%';
+function tipText(s, n) {
+  let t = s.d.name + ' · ' + GROUPS[s.d.g] + '\nSí: ' + s.si.length + ' de ' + n + ' (' + pct(s.si.length, n) + ')';
+  if (s.du.length) t += '\nDudosa: ' + s.du.length;
+  t += '\nNo: ' + s.no.length;
+  if (s.si.length) t += '\nEntregas con Sí: ' + s.si.join(', ');
+  if (s.du.length) t += '\nEntregas con Dudosa: ' + s.du.join(', ');
+  return t;
+}
+function itemRow(s, n, cls, stacked) {
+  const wS = n ? 100 * s.si.length / n : 0, wD = n ? 100 * s.du.length / n : 0;
+  const bar = '<div class="track"><div class="seg si" style="width:' + wS + '%"></div>' +
+    (s.du.length ? '<div class="seg du" style="width:calc(' + wD + '% - 2px)"></div>' : '') + '</div>';
+  const val = s.si.length + ' de ' + n + (s.du.length ? ' (+' + s.du.length + ' dud.)' : '');
+  const nm = esc(s.d.name);
+  const open = '<div class="item ' + cls + '" tabindex="0" data-tip="' + esc(tipText(s, n)) + '">';
+  if (stacked) return open + '<div class="top"><span class="nm">' + nm + '</span><span class="val">' + val + '</span></div>' + bar + '</div>';
+  return open + '<span class="nm">' + nm + '</span>' + bar + '<span class="val">' + val + '</span></div>';
+}
+function render() {
+  const { n, stats, groups, emer, dudCells, dudRows } = STATE.calc;
+  const sorted = [...stats].sort((a, b) => b.si.length - a.si.length || DIMS.indexOf(a.d) - DIMS.indexOf(b.d));
+  const top = sorted[0], low = sorted[sorted.length - 1];
+  const tied = (arr, ref) => arr.filter(s => s.si.length === ref.si.length);
+  const topNames = tied(sorted, top).map(s => s.d.name), lowNames = tied(sorted, low).map(s => s.d.name);
+  const nameList = a => a.length > 2 ? a.slice(0, 2).join(', ') + ' y ' + (a.length - 2) + ' más' : a.join(' y ');
+
+  $('#kpis').innerHTML =
+    '<div class="kpi"><div class="lab">Entregas leídas</div><div class="big">' + n + '</div></div>' +
+    '<div class="kpi"><div class="lab">Dimensión más presente</div><div class="big txt">' + esc(nameList(topNames)) + '</div><div class="det">' + top.si.length + ' de ' + n + ' entregas</div></div>' +
+    '<div class="kpi"><div class="lab">Dimensión menos presente</div><div class="big txt">' + esc(nameList(lowNames)) + '</div><div class="det">' + low.si.length + ' de ' + n + ' entregas</div></div>' +
+    '<div class="kpi"><div class="lab">Celdas dudosas por revisar</div><div class="big">' + dudCells + '</div><div class="det">en ' + dudRows + ' entrega(s)</div></div>';
+
+  $('#rankSub').textContent = 'Número de entregas donde aparece cada dimensión (de ' + n + '). Pasar el cursor muestra los códigos.';
+  $('#legend').innerHTML = GROUPS.map((g, i) => '<span><span class="sw" style="background:var(--g' + (i + 1) + ')"></span>' + esc(g) + '</span>').join('') +
+    '<span><span class="sw hatch"></span>Dudosa (por revisar)</span>';
+  $('#rank').innerHTML = sorted.map(s => itemRow(s, n, 'c' + s.d.g, false)).join('');
+
+  $('#groups').innerHTML = groups.map(g => {
+    const items = [...g.items].sort((a, b) => b.si.length - a.si.length || DIMS.indexOf(a.d) - DIMS.indexOf(b.d));
+    const w = n ? 100 * g.present / n : 0;
+    return '<section class="card c' + g.gi + '"><h2>' + esc(g.name) + '</h2>' +
+      '<div class="gsum"><b>' + g.present + ' de ' + n + '</b><span class="muted">entregas con al menos un ítem del grupo</span></div>' +
+      '<div class="track" style="margin-bottom:10px"><div class="seg si" style="width:' + w + '%"></div></div>' +
+      items.map(s => itemRow(s, n, 'c' + g.gi, true)).join('') + '</section>';
+  }).join('');
+
+  $('#emer').innerHTML = emer.length
+    ? emer.map(e => '<span class="tag">' + esc(e.t) + ' <b>' + e.c + '</b></span>').join('')
+    : '<span class="muted">Sin temas emergentes en esta tabla.</span>';
+
+  const byGuide = (a, b) => DIMS.indexOf(a.d) - DIMS.indexOf(b.d);
+  const hi = sorted.filter(s => s.si.length > 0).slice(0, 3);
+  const lo = [...sorted].reverse().slice(0, 3).sort(byGuide);
+  const ideas = [];
+  if (hi.length) ideas.push('Punto de partida común: ' + hi.map(s => s.d.name + ' (' + s.si.length + ' de ' + n + ')').join(', ') + '. Varias entregas ya traen material sobre esto y se puede poner en diálogo.');
+  if (lo.length) ideas.push('Casi no aparece: ' + lo.map(s => s.d.name + ' (' + s.si.length + ' de ' + n + ')').join(', ') + '. Pueden abrirse con una pregunta o una fuente nueva.');
+  if (emer.length) ideas.push('Temas que surgieron fuera de la guía: ' + emer.slice(0, 3).map(e => e.t + ' (' + e.c + ')').join(', ') + '. Pueden merecer un espacio de conversación.');
+  $('#ideas').innerHTML = ideas.map(t => '<li>' + esc(t) + '</li>').join('');
+
+  const dl = stats.filter(s => s.du.length);
+  $('#dudosas').innerHTML = dl.length
+    ? '<table><thead><tr><th>Dimensión</th><th>Entregas con Dudosa</th></tr></thead><tbody>' +
+      dl.map(s => '<tr><td>' + esc(s.d.name) + '</td><td>' + esc(s.du.join(', ')) + '</td></tr>').join('') + '</tbody></table>'
+    : '<p class="muted" style="margin-top:8px">No hay celdas dudosas.</p>';
+
+  $('#tbl').innerHTML = '<table><thead><tr><th>Grupo</th><th>Dimensión</th><th class="n">Sí</th><th class="n">Dudosa</th><th class="n">No</th><th class="n">% con Sí</th></tr></thead><tbody>' +
+    stats.map(s => '<tr><td>' + esc(GROUPS[s.d.g]) + '</td><td>' + esc(s.d.name) + '</td><td class="n">' + s.si.length + '</td><td class="n">' + s.du.length + '</td><td class="n">' + s.no.length + '</td><td class="n">' + pct(s.si.length, n) + '</td></tr>').join('') + '</tbody></table>';
+
+}
+
+/* ---------- interacción ---------- */
+function show(text) {
+  $('#msgs').innerHTML = '';
+  let data;
+  try {
+    const d = detectDelim(text);
+    data = buildData(parseDelimited(text, d));
+  } catch (e) {
+    $('#msgs').innerHTML = '<div class="notice error">' + esc(e.message) + '</div>';
+    $('#out').classList.add('hidden');
+    return;
+  }
+  STATE = { data, calc: compute(data) };
+  if (data.warnings.length) $('#msgs').innerHTML = data.warnings.map(w => '<div class="notice">' + esc(w) + '</div>').join('');
+  $('#out').classList.remove('hidden');
+  render();
+  $('#out').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+let PENDING = null;
+function readFile(f) {
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    PENDING = String(r.result);
+    $('#fname').textContent = 'Archivo cargado: ' + f.name + '. Pulse "Mostrar panel".';
+    $('#msgs').innerHTML = '';
+  };
+  r.readAsText(f, 'utf-8');
+}
+$('#file').addEventListener('change', e => readFile(e.target.files[0]));
+$('#btnShow').addEventListener('click', () => {
+  if (!PENDING) { $('#msgs').innerHTML = '<div class="notice error">Elija primero el archivo CSV.</div>'; return; }
+  show(PENDING);
+});
+$('#btnDemo').addEventListener('click', () => { $('#fname').textContent = 'Datos de ejemplo (ficticios).'; show(DEMO); });
+$('#btnClear').addEventListener('click', () => {
+  PENDING = null; $('#file').value = ''; $('#fname').textContent = ''; $('#msgs').innerHTML = '';
+  $('#out').classList.add('hidden'); STATE = null;
+});
+const drop = $('#drop');
+['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', e => readFile(e.dataTransfer.files[0]));
+$('#btnPrint').addEventListener('click', () => window.print());
+$('#btnCsv').addEventListener('click', () => {
+  if (!STATE) return;
+  const { n, stats } = STATE.calc;
+  const q = s => '"' + String(s).replace(/"/g, '""') + '"';
+  const lines = [['Grupo', 'Dimensión', 'Entregas con Sí', 'Entregas con Dudosa', 'Entregas con No', 'Total de entregas'].map(q).join(',')];
+  stats.forEach(s => lines.push([GROUPS[s.d.g], s.d.name, s.si.length, s.du.length, s.no.length, n].map(q).join(',')));
+  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'resumen_dimensiones.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+
+/* tooltip */
+const tip = $('#tip');
+function place(x, y) {
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.max(8, Math.min(x + 14, innerWidth - w - 8)) + 'px';
+  tip.style.top = Math.max(8, Math.min(y + 14, innerHeight - h - 8)) + 'px';
+}
+document.addEventListener('mouseover', e => {
+  const t = e.target.closest('[data-tip]');
+  if (!t) return;
+  tip.textContent = t.dataset.tip; tip.style.display = 'block'; place(e.clientX, e.clientY);
+});
+document.addEventListener('mousemove', e => { if (tip.style.display === 'block') place(e.clientX, e.clientY); });
+document.addEventListener('mouseout', e => { if (e.target.closest('[data-tip]')) tip.style.display = 'none'; });
+document.addEventListener('focusin', e => {
+  const t = e.target.closest && e.target.closest('[data-tip]');
+  if (!t) return;
+  const r = t.getBoundingClientRect();
+  tip.textContent = t.dataset.tip; tip.style.display = 'block'; place(r.left + 20, r.bottom - 8);
+});
+document.addEventListener('focusout', () => { tip.style.display = 'none'; });
+</script>
+</body>
 </html>
